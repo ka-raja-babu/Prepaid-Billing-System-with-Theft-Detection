@@ -1,15 +1,16 @@
-#include <EEPROM.h> 
+//Required Libraries
+#include <EEPROM.h>  //For EEPROM
+#include <LiquidCrystal.h>  //For LCD
+#include <SoftwareSerial.h> //For GSM
 
-#include <LiquidCrystal.h>// initialize the library with the numbers of the interface pins
-LiquidCrystal lcd(3, 4, 5, 6, 7, 8);
+LiquidCrystal lcd(3, 4, 5, 6, 7, 8); //Defining arduino pins for LCD
 
-#include <SoftwareSerial.h> 
-SoftwareSerial GSM(9 ,10);
+SoftwareSerial GSM(9 ,10);  //Defining arduino pins for GSM
 
+//Defining some variables
 #define buzzer 13
 #define relay A5
 #define bt_theft  A0
-
 #define pulse_in 2
 
 char inchar; // Will hold the incoming character from the GSM shield
@@ -20,27 +21,27 @@ long total_unt =7;
 int price = 0;
 long price1 =0;
 
-int Set = 10; // Set the unit price
+int Set = 10; // Set the price of one unit
 
 int pulse=0;
 
-//change +92 with country code and 3378655465 with phone number to sms
-String phone_no1 = "+923378655465"; //Enter Consumer number
-String phone_no2 = "+923443326077"; //Enter Company number
+//Defining mobile number for SMS
+String phone_no1 = "+913378655465"; //Enter Consumer number
+String phone_no2 = "+913443326077"; //Enter Company number
 
 int flag1=0, flag2=0, flag3=0;
 
-void setup() {  
+void setup() 
+{  
 Serial.begin(9600);
 GSM.begin(9600);
 
 pinMode(bt_theft,   INPUT_PULLUP);
-pinMode(relay,OUTPUT); //digitalWrite(relay1, HIGH);
+pinMode(relay,OUTPUT); 
 pinMode(buzzer,OUTPUT); 
 
 pinMode(pulse_in,   INPUT);
- //A rising pulse from encodenren activated ai0(). AttachInterrupt 0 is DigitalPin nr 2 on moust Arduino.
- attachInterrupt(0, ai0, RISING);
+attachInterrupt(0, ai0, RISING);
 
 lcd.begin(16, 2);
 lcd.clear();
@@ -48,7 +49,7 @@ lcd.setCursor(5,0);
 lcd.print("WELCOME");
 lcd.setCursor(2,1);
 lcd.print("Energy Meter");
-digitalWrite(buzzer, HIGH); // Turn LED on.
+digitalWrite(buzzer, HIGH); // Turn buzzer on.
 
 Serial.println("Initializing....");
 initModule("AT","OK",1000);
@@ -59,7 +60,7 @@ initModule("AT+CNMI=2,2,0,0,0","OK",1000);
 Serial.println("Initialized Successfully"); 
 delay(100);
 sendSMS(phone_no1,"Welcome To Energy Meter"); 
-digitalWrite(buzzer, LOW); // Turn LED off 
+digitalWrite(buzzer, LOW); // Turn buzzer off 
 lcd.clear();
 
 if(EEPROM.read(50)==0){}

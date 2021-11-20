@@ -10,7 +10,7 @@ SoftwareSerial GSM(9 ,10);  //Defining arduino pins for GSM
 //Defining some variables
 #define buzzer 13
 #define relay A5
-#define bt_theft  A0
+#define theft  A0
 #define pulse_in 2
 
 char inchar; // Will hold the incoming character from the GSM shield
@@ -36,7 +36,7 @@ void setup()
 Serial.begin(9600);
 GSM.begin(9600);
 
-pinMode(bt_theft,   INPUT_PULLUP);
+pinMode(theft,   INPUT_PULLUP);
 pinMode(relay,OUTPUT); 
 pinMode(buzzer,OUTPUT); 
 
@@ -171,7 +171,7 @@ digitalWrite(buzzer, LOW);
  }  
 }
 
-if(digitalRead (bt_theft) == 0){
+if(digitalRead (theft) == 0){
 if(flag3==0){ flag3 = 1;
 sendSMS(phone_no2,"Theft Alarm");  
  }   
